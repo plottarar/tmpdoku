@@ -1,0 +1,20 @@
+{
+  "name": "tmpdoku",
+  "version": "1.0.0",
+  "description": "Sudoku on the web. Play offline, save to home-screen.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/plottarar/tmpdoku.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/plottarar/tmpdoku/issues"
+  },
+  "homepage": "https://github.com/plottarar/tmpdoku#readme"
+}
