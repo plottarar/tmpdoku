@@ -1,40 +1,42 @@
-var http = require('http')
-var url = require('url')
-var fs = require('fs')
-var path = require('path')
-var baseDirectory = __dirname   // or whatever base directory you want
+const http = require('http');
+const url = require('url');
+const fs = require('fs');
+const path = require('path');
 
-var port = 8080
+const baseDirectory = __dirname; // or whatever base directory you want
 
-http.createServer(function (request, response) {
-    try {
-        var requestUrl = url.parse(request.url)
+const port = 3000;
 
-        // need to use path.normalize so people can't access directories underneath baseDirectory
-        var fsPath = baseDirectory+path.normalize(requestUrl.pathname)
+http.createServer((request, response) => {
+  try {
+    let { pathname } = url.parse(request.url);
 
-        // Force correct content-type for JavaScript
-        // This is a work-around for an issue where 
-        // es6 modules have "" as content-type.
-        if (fsPath.endsWith(".js")) {
-          response.setHeader('content-type', 'text/javascript');
-        }
+    // need to use path.normalize so people can't access directories underneath baseDirectory
+    const fsPath = baseDirectory + path.normalize(pathname);
 
-        var fileStream = fs.createReadStream(fsPath)
+    // Force correct content-type for JavaScript
+    // This is a work-around for an issue where
+    // es6 modules have "" as content-type.
+    if (fsPath.endsWith('.js')) {
+      response.setHeader('content-type', 'text/javascript');
+    }
 
-        fileStream.pipe(response)
-        fileStream.on('open', function() {
-             response.writeHead(200)
-        })
-        fileStream.on('error',function(e) {
-             response.writeHead(404)     // assume the file doesn't exist
-             response.end()
-        })
-   } catch(e) {
-        response.writeHead(500)
-        response.end()     // end the response so browsers don't hang
-        console.log(e.stack)
-   }
-}).listen(port)
+    const fileStream = fs.createReadStream(fsPath);
 
-console.log("listening on port "+port)
+    fileStream.pipe(response);
+    fileStream.on('open', () => {
+      response.writeHead(200);
+    });
+    fileStream.on('error', (e) => {
+      console.log(e);
+      response.writeHead(404); // assume the file doesn't exist
+      response.end();
+    });
+  } catch (e) {
+    response.writeHead(500);
+    response.end(); // end the response so browsers don't hang
+    console.log(e.stack);
+  }
+}).listen(port);
+
+console.log(`listening on port ${port}`);
