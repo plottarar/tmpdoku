@@ -12,6 +12,7 @@ http.createServer((request, response) => {
     let { pathname } = url.parse(request.url);
 
     // need to use path.normalize so people can't access directories underneath baseDirectory
+    pathname = pathname === '/' ? '/index.html' : pathname;
     const fsPath = baseDirectory + path.normalize(pathname);
 
     // Force correct content-type for JavaScript
