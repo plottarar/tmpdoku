@@ -4,7 +4,7 @@
   "description": "Sudoku on the web. Play offline, save to home-screen.",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start": "node server.js"
   },
   "repository": {
@@ -16,5 +16,16 @@
   "bugs": {
     "url": "https://github.com/plottarar/tmpdoku/issues"
   },
-  "homepage": "https://github.com/plottarar/tmpdoku#readme"
+  "homepage": "https://github.com/plottarar/tmpdoku#readme",
+  "dependencies": {
+    "jest": "^22.4.3",
+    "prettier": "^1.11.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.0.0-beta.42",
+    "babel-core": "^7.0.0-0",
+    "babel-jest": "^22.4.3",
+    "babel-preset-env": "^1.6.1",
+    "regenerator-runtime": "^0.11.1"
+  }
 }
