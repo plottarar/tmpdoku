@@ -112,7 +112,7 @@ test('uncover 3x3', () => {
   expect(h).toEqual(root);
 });
 
-test('search', () => {
+test.only('search', () => {
   const h = dlxMatrix({
     binaryMatrix: [
       [0, 0, 1, 0, 1, 1, 0],
@@ -122,8 +122,8 @@ test('search', () => {
       [0, 1, 0, 0, 0, 0, 1],
       [0, 0, 0, 1, 1, 0, 1],
     ],
-    names: ['A','B','C', 'D', 'E', 'F', 'G']
+    names: ['A', 'B', 'C', 'D', 'E', 'F', 'G']
   });
 
-  // expect(search(h)).toEqual([])
+  expect(search(h)).toEqual([])
 });
