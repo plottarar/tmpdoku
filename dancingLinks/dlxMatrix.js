@@ -26,14 +26,15 @@
  */
 
 export const dlxMatrix = ({ binaryMatrix, names, debug }) => {
-  const size = binaryMatrix.length; // assumed quadratic
+  const numOfRows = binaryMatrix.length;
+  const numOfCols = binaryMatrix[0].length;
 
   // Traverse the matrix an replace 1s with objects containing empty properties.
   // This is necessary to achive referential integrity when building the dlx matrix.
-  for (let i = 0; i < size; i++) {
-    for (let j = 0; j < size; j++) {
-      if (binaryMatrix[i][j] !== 0) {
-        binaryMatrix[i][j] = {
+  for (let col = 0; col < numOfCols; col++) {
+    for (let row = 0; row < numOfRows; row++) {
+      if (binaryMatrix[row][col] !== 0) {
+        binaryMatrix[row][col] = {
           u: null,
           d: null,
           l: null,
@@ -41,7 +42,7 @@ export const dlxMatrix = ({ binaryMatrix, names, debug }) => {
           c: null,
         };
         if (debug) {
-          binaryMatrix[i][j].debug = { i, j };
+          binaryMatrix[row][col].debug = { i:row, j:col };
         }
       }
     }
@@ -50,13 +51,13 @@ export const dlxMatrix = ({ binaryMatrix, names, debug }) => {
   const h = { r: null, l: null, name: 'root' };
   let prevColHeader = h;
 
-  for (let i = 0; i < size; i++) {
+  for (let col = 0; col < numOfCols; col++) {
     let currColHeader = {
       r: null,
       l: null,
       u: null,
       d: null,
-      name: names[i],
+      name: names[col],
       count: 0,
     };
     prevColHeader.r = currColHeader;
@@ -64,38 +65,38 @@ export const dlxMatrix = ({ binaryMatrix, names, debug }) => {
 
     let currCell;
 
-    for (let j = 0; j < size; j++) {
-      const cell = binaryMatrix[i][j];
+    for (let row = 0; row < numOfRows; row++) {
+      const cell = binaryMatrix[row][col];
       if (cell === 0) continue;
 
-      let u = j;
-      let d = j;
-      let l = i;
-      let r = i;
+      let u = row;
+      let d = row;
+      let l = col;
+      let r = col;
 
       // Increment and decrement directions, with bound checks.
       // On hitting a bound, circle around and start from the other side.
-      do { u--; if (u < 0) u = size - 1; } while (binaryMatrix[i][u] === 0);
-      do { d++; if (d >= size) d = 0; } while (binaryMatrix[i][d] === 0);
-      do { l--; if (l < 0) l = size - 1; } while (binaryMatrix[l][j] === 0);
-      do { r++; if (r >= size) r = 0; } while (binaryMatrix[r][j] === 0);
+      do { u--; if (u < 0) u = numOfRows - 1; } while (binaryMatrix[u][col] === 0);
+      do { d++; if (d >= numOfRows) d = 0; } while (binaryMatrix[d][col] === 0);
+      do { l--; if (l < 0) l = numOfCols - 1; } while (binaryMatrix[row][l] === 0);
+      do { r++; if (r >= numOfCols) r = 0; } while (binaryMatrix[row][r] === 0);
 
       currColHeader.count++;
 
-      cell.u = binaryMatrix[i][u];
-      cell.d = binaryMatrix[i][d];
-      cell.l = binaryMatrix[l][j];
-      cell.r = binaryMatrix[r][j];
+      cell.u = binaryMatrix[u][col];
+      cell.d = binaryMatrix[d][col];
+      cell.l = binaryMatrix[row][l];
+      cell.r = binaryMatrix[row][r];
       cell.c = currColHeader;
 
       currCell = cell;
     }
+
+    // Inject the column-header between the first and last cells in this column.
     let lastCell = currCell;
     let firstCell = currCell.d;
-
     currColHeader.d = firstCell
     firstCell.u = currColHeader
-
     currColHeader.u = lastCell;
     lastCell.d = currColHeader;
 

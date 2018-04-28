@@ -17,35 +17,35 @@ test('dlxMatrix 2x2, cell by cell debug assertions', () => {
   const cA = h.r;
   expect(cA.l.name).toBe('root');
   expect(cA.r.name).toBe('B');
-  expect(cA.u.debug).toEqual({i:0,j:1});
+  expect(cA.u.debug).toEqual({i:1,j:0});
   expect(cA.d.debug).toEqual({i:0,j:0});
 
   const cB = h.l;
   expect(cB.l.name).toBe('A');
   expect(cB.r.name).toBe('root');
-  expect(cB.u.debug).toEqual({i:1,j:0});
-  expect(cB.d.debug).toEqual({i:1,j:0});
+  expect(cB.u.debug).toEqual({i:0,j:1});
+  expect(cB.d.debug).toEqual({i:0,j:1});
 
   const c00 = cA.d;
   expect(c00.debug).toEqual({i:0,j:0});
-  expect(c00.l.debug).toEqual({i:1,j:0});
-  expect(c00.r.debug).toEqual({i:1,j:0});
+  expect(c00.l.debug).toEqual({i:0,j:1});
+  expect(c00.r.debug).toEqual({i:0,j:1});
   expect(c00.u.name).toEqual('A');
-  expect(c00.d.debug).toEqual({i:0,j:1});
+  expect(c00.d.debug).toEqual({i:1,j:0});
 
-  const c01 = cA.u;
-  expect(c01.debug).toEqual({i:0,j:1});
-  expect(c01.l.debug).toEqual({i:0,j:1});
-  expect(c01.r.debug).toEqual({i:0,j:1});
-  expect(c01.u.debug).toEqual({i:0,j:0});
-  expect(c01.d.name).toEqual('A');
-
-  const c10 = cB.d;
+  const c10 = cA.u;
   expect(c10.debug).toEqual({i:1,j:0});
-  expect(c10.l.debug).toEqual({i:0,j:0});
-  expect(c10.r.debug).toEqual({i:0,j:0});
-  expect(c10.u.name).toEqual('B');
-  expect(c10.d.name).toEqual('B');
+  expect(c10.l.debug).toEqual({i:1,j:0});
+  expect(c10.r.debug).toEqual({i:1,j:0});
+  expect(c10.u.debug).toEqual({i:0,j:0});
+  expect(c10.d.name).toEqual('A');
+
+  const c01 = cB.d;
+  expect(c01.debug).toEqual({i:0,j:1});
+  expect(c01.l.debug).toEqual({i:0,j:0});
+  expect(c01.r.debug).toEqual({i:0,j:0});
+  expect(c01.u.name).toEqual('B');
+  expect(c01.d.name).toEqual('B');
 });
 
 
@@ -94,4 +94,28 @@ test('dlxMatrix 3x3', () => {
   c3.l = a3; c3.r = a3; c3.u = c1; c3.d = Cc; c3.c = Cc;
 
   expect(h).toEqual(root);
+});
+
+test('uneven matrix', () => {
+  const h = dlxMatrix({
+    binaryMatrix: [
+      [0, 0, 1, 0, 1, 1, 0],
+      [1, 0, 0, 1, 0, 0, 1],
+      [0, 1, 1, 0, 0, 1, 0],
+      [1, 0, 0, 1, 0, 0, 0],
+      [0, 1, 0, 0, 0, 0, 1],
+      [0, 0, 0, 1, 1, 0, 1],
+    ], 
+    names: ['A','B','C', 'D', 'E', 'F', 'G'],
+    debug: true,
+  });
+  const c01 = h.r.d;
+  const c02 = c01.d;
+  const c12 = h.r.r.d;
+  const c14 = h.r.r.d.d;
+
+  expect(h.r.d.debug).toEqual({i:1,j:0})
+  expect(h.r.r.r.d.debug).toEqual({i:0,j:2})
+  expect(h.r.r.r.d.c.name).toEqual('C')
+  expect(h.r.d.d.r.c.name).toBe('D');
 });
