@@ -3,7 +3,9 @@ import { backtrackSolver } from './backtracking.js';
 import { dlxMatrix } from './dancingLinks/dlxMatrix.js';
 import { search, printOut } from './dancingLinks/dancingLinks.js';
 
-search(
+// console.log(add(1, 1));
+
+window.a = search(
   dlxMatrix({
     binaryMatrix: [
       [0, 0, 1, 0, 1, 1, 0],
@@ -16,8 +18,9 @@ search(
     names: ['A', 'B', 'C', 'D', 'E', 'F', 'G'],
   })
 );
+a.forEach(s => console.log(printOut(s)));
 
-search(
+window.d = search(
   dlxMatrix({
     binaryMatrix: [
       [0, 0, 1],
@@ -25,11 +28,12 @@ search(
       [0, 1, 1],
     ],
     names: ['A', 'B', 'C'],
-    debug: true,
   })
 );
+d.forEach(s => console.log(printOut(s)));
 
-search(
+
+window.b = search(
   dlxMatrix({
     binaryMatrix: [
       [1, 1, 0, 0, 1, 0, 1, 0, 0],
@@ -39,9 +43,10 @@ search(
       [0, 1, 0, 0, 0, 0, 1, 1, 0],
     ],
     names: ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
-    debug: true,
   })
 );
+b.forEach(s => console.log(printOut(s)));
+
 
 // console.log(backtrackSolver([
 //   [0, 0, 0, 2, 6, 0, 7, 0, 1],

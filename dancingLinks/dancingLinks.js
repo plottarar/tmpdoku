@@ -51,10 +51,13 @@ export const uncover = col => {
 };
 
 export const search = h => {
+  let foundSolutions = [];
   const loop = (k, solution) => {
-    // If this branch is taken, a solution has been found.
+    // If this branch is taken then a solution has been found.
     if (h === h.r) {
-      console.log(printOut(solution))
+      // Clone the solution to get a fresh reference to the solution array
+      // at this point and add it to the found solutions.
+      foundSolutions.push([...solution])
       return;
     }
 
@@ -93,5 +96,5 @@ export const search = h => {
     return;
   };
   loop(0, []);
-  return;
+  return foundSolutions;
 };
