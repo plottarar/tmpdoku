@@ -1,4 +1,4 @@
-export const print = dataObjects => {
+export const printOut = dataObjects => {
   return dataObjects.map(dataObject => {
     let rowString = dataObject.c.name;
     let curr = dataObject.r;
@@ -51,42 +51,47 @@ export const uncover = col => {
 };
 
 export const search = h => {
-  if (h === h.r) return h.name;
+  const loop = (k, solution) => {
+    // If this branch is taken, a solution has been found.
+    if (h === h.r) {
+      console.log(printOut(solution))
+      return;
+    }
 
-  let solutution = [];
-
-  const loop = k => {
     let col = h.r;
     cover(col);
 
     let j = col.d;
     while (j !== col) {
       // Add row to the partial solution
-      solutution[k] = j;
+      solution[k] = j;
 
       // Cover
       let i = j.r;
       while (i !== j) {
-        cover(j.c);
+        cover(i.c);
         i = i.r;
       }
 
-      // Reduce
-      loop(k + 1);
-      j = solutution[k];
+      // Reduce problem
+      loop(k + 1, solution);
+
+      // Pop data object
+      j = solution[k];
       col = j.c;
 
       // Uncover
-      let p = j.l;
-      while (p !== j) {
-        uncover(j.c);
-        p = p.l;
+      i = j.l;
+      while (i !== j) {
+        uncover(i.c);
+        i = i.l;
       }
 
       j = j.d;
     }
-    cover(col);
-    return solutution;
+    uncover(col);
+    return;
   };
-  return loop(0);
+  loop(0, []);
+  return;
 };

@@ -1,10 +1,47 @@
-import add from './add.js'
-import {backtrackSolver} from './backtracking.js'
-import {constructDataObjects} from './dancingLinks/dlxMatrix.js'
+import add from './add.js';
+import { backtrackSolver } from './backtracking.js';
+import { dlxMatrix } from './dancingLinks/dlxMatrix.js';
+import { search, printOut } from './dancingLinks/dancingLinks.js';
 
-console.log(add(1,1))
+search(
+  dlxMatrix({
+    binaryMatrix: [
+      [0, 0, 1, 0, 1, 1, 0],
+      [1, 0, 0, 1, 0, 0, 1],
+      [0, 1, 1, 0, 0, 1, 0],
+      [1, 0, 0, 1, 0, 0, 0],
+      [0, 1, 0, 0, 0, 0, 1],
+      [0, 0, 0, 1, 1, 0, 1],
+    ],
+    names: ['A', 'B', 'C', 'D', 'E', 'F', 'G'],
+  })
+);
 
-window.a = constructDataObjects([[1,1], [1,0]])
+search(
+  dlxMatrix({
+    binaryMatrix: [
+      [0, 0, 1],
+      [1, 0, 0],
+      [0, 1, 1],
+    ],
+    names: ['A', 'B', 'C'],
+    debug: true,
+  })
+);
+
+search(
+  dlxMatrix({
+    binaryMatrix: [
+      [1, 1, 0, 0, 1, 0, 1, 0, 0],
+      [0, 0, 1, 1, 0, 1, 0, 0, 0],
+      [1, 0, 0, 0, 1, 0, 0, 0, 1],
+      [1, 0, 1, 1, 1, 1, 0, 1, 1],
+      [0, 1, 0, 0, 0, 0, 1, 1, 0],
+    ],
+    names: ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
+    debug: true,
+  })
+);
 
 // console.log(backtrackSolver([
 //   [0, 0, 0, 2, 6, 0, 7, 0, 1],

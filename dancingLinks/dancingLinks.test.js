@@ -1,7 +1,7 @@
-import { print, cover, uncover, search } from './dancingLinks';
+import { printOut, cover, uncover, search } from './dancingLinks';
 import { dlxMatrix } from './dlxMatrix';
 
-test('print', () => {
+test('printOut', () => {
   const h = dlxMatrix({
     binaryMatrix: [
       [0, 0, 1, 0, 1, 1, 0],
@@ -19,7 +19,7 @@ test('print', () => {
   const c41 = h.r.r.d.d;
   const c02 = h.r.r.r.d;
 
-  expect(print([c30, c41, c02])).toEqual([
+  expect(printOut([c30, c41, c02])).toEqual([
     'A, D',
     'B, G',
     'C, E, F',
@@ -112,7 +112,7 @@ test('uncover 3x3', () => {
   expect(h).toEqual(root);
 });
 
-test.only('search', () => {
+test('search', () => {
   const h = dlxMatrix({
     binaryMatrix: [
       [0, 0, 1, 0, 1, 1, 0],
