@@ -112,7 +112,7 @@ test('uncover 3x3', () => {
   expect(h).toEqual(root);
 });
 
-test('search', () => {
+test('search with one solution', () => {
   const h = dlxMatrix({
     binaryMatrix: [
       [0, 0, 1, 0, 1, 1, 0],
@@ -124,6 +124,31 @@ test('search', () => {
     ],
     names: ['A', 'B', 'C', 'D', 'E', 'F', 'G']
   });
+  const solutions = search(h);
 
-  expect(search(h)).toEqual([])
+  expect(solutions).toHaveLength(1)
+  expect(printOut(solutions[0])).toEqual([
+    'A, D',
+    'B, G',
+    'C, E, F',
+  ])
+  // Jest bug here I think. This doesn't terminate:
+  // expect(search(h)).toEqual([])
+});
+
+test('search with multiple solutions', () => {
+  const h = dlxMatrix({
+    binaryMatrix: [
+      [0, 0, 1],
+      [1, 0, 0],
+      [0, 1, 1],
+      [0, 1, 0],
+    ],
+    names: ['A', 'B', 'C']
+  });
+  const solutions = search(h);
+
+  expect(solutions).toHaveLength(2)
+  expect(printOut(solutions[0])).toEqual(['A', 'B, C'])
+  expect(printOut(solutions[1])).toEqual(['A', 'B', 'C'])
 });
