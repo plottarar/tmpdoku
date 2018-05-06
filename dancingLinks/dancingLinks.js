@@ -1,3 +1,20 @@
+export const chooseColumn = (h, opts) => {
+  if (opts.minimizeBranching) {
+    // Choose the column with the least number of 1s
+    let c = h.r;
+    let j = h.r;
+    while(j !== h) {
+      if (j.count < c.count) {
+        c = j;
+      }
+      j = j.r;
+    }
+    return c;
+  } else {
+    return h.r;
+  }
+}
+
 export const printOut = dataObjects => {
   return dataObjects.map(dataObject => {
     let rowString = dataObject.c.name;
@@ -50,7 +67,7 @@ export const uncover = col => {
   col.r.l = col;
 };
 
-export const search = h => {
+export const search = (h, opts = {}) => {
   let foundSolutions = [];
   const loop = (k, solution) => {
     // If this branch is taken then a solution has been found.
@@ -61,7 +78,7 @@ export const search = h => {
       return;
     }
 
-    let col = h.r;
+    let col = chooseColumn(h, opts);
     cover(col);
 
     let j = col.d;

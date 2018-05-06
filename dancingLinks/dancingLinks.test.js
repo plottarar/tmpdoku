@@ -1,5 +1,16 @@
-import { printOut, cover, uncover, search } from './dancingLinks';
+import { printOut, cover, uncover, search, chooseColumn } from './dancingLinks';
 import { dlxMatrix } from './dlxMatrix';
+
+test('chooseColumn', () => {
+  let h = {}, a = {}, b = {}, c = {};
+  h.r = a;
+  a.r = b; a.count = 2;
+  b.r = c; b.count = 1;
+  c.r = h; c.count = 3;
+
+  expect(chooseColumn(h, {})).toBe(a)
+  expect(chooseColumn(h, { minimizeBranching: true })).toBe(b)
+})
 
 test('printOut', () => {
   const h = dlxMatrix({
