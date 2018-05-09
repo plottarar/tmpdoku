@@ -125,6 +125,7 @@ test('uncover 3x3', () => {
 
 test('search with one solution', () => {
   const h = dlxMatrix({
+    // Example matrix used in the paper
     binaryMatrix: [
       [0, 0, 1, 0, 1, 1, 0],
       [1, 0, 0, 1, 0, 0, 1],
@@ -145,6 +146,29 @@ test('search with one solution', () => {
   ])
   // Jest bug here I think. This doesn't terminate:
   // expect(search(h)).toEqual([])
+});
+
+test('search with minimized branching', () => {
+  const h = dlxMatrix({
+    // Example matrix used in the paper
+    binaryMatrix: [
+      [0, 0, 1, 0, 1, 1, 0],
+      [1, 0, 0, 1, 0, 0, 1],
+      [0, 1, 1, 0, 0, 1, 0],
+      [1, 0, 0, 1, 0, 0, 0],
+      [0, 1, 0, 0, 0, 0, 1],
+      [0, 0, 0, 1, 1, 0, 1],
+    ],
+    names: ['A', 'B', 'C', 'D', 'E', 'F', 'G']
+  });
+  const solutions = search(h, { minimizeBranching:true });
+
+  expect(solutions).toHaveLength(1)
+  expect(printOut(solutions[0])).toEqual([
+    'A, D',
+    'E, F, C',
+    'B, G',
+  ])
 });
 
 test('search with multiple solutions', () => {
