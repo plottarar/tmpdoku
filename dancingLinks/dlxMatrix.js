@@ -25,7 +25,7 @@
  * https://arxiv.org/abs/cs/0011047
  */
 
-export const dlxMatrix = ({ binaryMatrix, names, debug }) => {
+export const dlxMatrix = ({ binaryMatrix, names=[], cellTransform }) => {
   const numOfRows = binaryMatrix.length;
   const numOfCols = binaryMatrix[0].length;
 
@@ -41,8 +41,12 @@ export const dlxMatrix = ({ binaryMatrix, names, debug }) => {
           r: null,
           c: null,
         };
-        if (debug) {
-          binaryMatrix[row][col].debug = { i:row, j:col };
+        if (cellTransform) {
+          binaryMatrix[row][col] = cellTransform(
+            binaryMatrix[row][col],
+            row,
+            col
+          );
         }
       }
     }
@@ -57,7 +61,8 @@ export const dlxMatrix = ({ binaryMatrix, names, debug }) => {
       l: null,
       u: null,
       d: null,
-      name: names[col],
+      // If no name provided, fall back to col number string
+      name: names[col] || `${col}`,
       count: 0,
     };
     prevColHeader.r = currColHeader;
@@ -92,6 +97,15 @@ export const dlxMatrix = ({ binaryMatrix, names, debug }) => {
       currCell = cell;
     }
 
+    // No items in this column
+    if (!currCell) {
+      currColHeader.d = currColHeader;
+      currColHeader.u = currColHeader;
+      prevColHeader = currColHeader;
+      continue;
+      // throw new Error(`No 1s in column ${col}. Problem has no solution.`)
+    }
+
     // Inject the column-header between the first and last cells in this column.
     let lastCell = currCell;
     let firstCell = currCell.d;
@@ -108,3 +122,18 @@ export const dlxMatrix = ({ binaryMatrix, names, debug }) => {
 
   return h;
 };
+
+export const colValidator = binaryMatrix => {
+  const numOfRows = binaryMatrix.length;
+  const numOfCols = binaryMatrix[0].length;
+  const invalidCols = {};
+
+  for (let col = 0; col < numOfCols; col++) {
+    let foundOne = false;
+    for (let row = 0; row < numOfRows; row++) {
+      if (binaryMatrix[row][col] === 1) foundOne = true;
+    }
+    if(!foundOne) invalidCols[col] = true;
+  }
+  return invalidCols;
+}
