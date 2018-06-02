@@ -23,7 +23,6 @@ test('printOut', () => {
       [0, 0, 0, 1, 1, 0, 1],
     ],
     names: ['A','B','C', 'D', 'E', 'F', 'G'],
-    debug: true,
   });
 
   const c30 = h.r.d.d;
